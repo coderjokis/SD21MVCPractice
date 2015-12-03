@@ -6,11 +6,13 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using MVC_Group_Project.Models;
 using SD21MVCPractice.Models;
+using SD21MVCPractice;
+using SD21MVCPractice.Filters;
 
 namespace SD21MVCPractice.Controllers
 {
+    [CustomAuthorization(Role ="Admin")]
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
