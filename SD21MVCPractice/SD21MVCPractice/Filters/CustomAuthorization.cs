@@ -16,7 +16,7 @@ namespace SD21MVCPractice.Filters
             {
                 filterContext.Result=
                     new RedirectToRouteResult(
-                        new System.Web.Routing.RouteValueDictionary {"Controller","Home"},{"Action","Index" });
+                        new System.Web.Routing.RouteValueDictionary { { "Controller", "Home" }, { "Action", "Index" } });
             }
             base.OnActionExecuting(filterContext);
         }    
