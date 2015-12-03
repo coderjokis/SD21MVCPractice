@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using SD21MVCPractice.Models;
+using Microsoft.Owin;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace SD21MVCPractice.Controllers
 {
@@ -17,15 +19,17 @@ namespace SD21MVCPractice.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -37,6 +41,17 @@ namespace SD21MVCPractice.Controllers
             private set 
             { 
                 _signInManager = value; 
+            }
+        }
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -72,7 +87,6 @@ namespace SD21MVCPractice.Controllers
             {
                 return View(model);
             }
-
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
@@ -90,7 +104,18 @@ namespace SD21MVCPractice.Controllers
                     return View(model);
             }
         }
+        //Confifure theb RoleManager used in the application. RoleManager is defined in the ASP.Net Identity core assembly
 
+        public class ApplicationRoleManager :RoleManager<IdentityRole>
+        {
+            public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+                :base(roleStore)
+            { }
+            public static ApplicationRoleManager Create (IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+            {
+                return new ApplicationRoleManager(new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>()));
+            }
+        }
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
