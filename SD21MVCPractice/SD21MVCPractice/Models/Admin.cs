@@ -48,3 +48,4 @@ namespace MVCPractice01.Models
         public IEnumerable<SelectListItem> RoleList { get; set; }
     }
 }
+
