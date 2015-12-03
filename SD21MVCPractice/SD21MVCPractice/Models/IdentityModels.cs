@@ -29,5 +29,7 @@ namespace SD21MVCPractice.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<MVC_Group_Project.Models.RoleViewModel> RoleViewModels { get; set; }
     }
 }
