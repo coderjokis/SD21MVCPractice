@@ -31,5 +31,7 @@ namespace SD21MVCPractice.Models
         }
 
         public System.Data.Entity.DbSet<SD21MVCPractice.Models.RoleViewModel> RoleViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<SD21MVCPractice.Models.BookModel> BookModels { get; set; }
     }
 }
